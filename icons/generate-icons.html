@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Extension Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    .icon-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .icon-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1976d2;
+    }
+    h2 {
+      color: #333;
+    }
+    p {
+      color: #666;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎯 Element Selector - Icon Generator</h2>
+  <p>Click the buttons below to download each icon size. Save them in the <code>icons/</code> folder.</p>
+  
+  <div class="icon-container">
+    <div class="icon-box">
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <br>
+      <button onclick="downloadIcon(16)">Download 16x16</button>
+    </div>
+    <div class="icon-box">
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <br>
+      <button onclick="downloadIcon(48)">Download 48x48</button>
+    </div>
+    <div class="icon-box">
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <br>
+      <button onclick="downloadIcon(128)">Download 128x128</button>
+    </div>
+  </div>
+
+  <script>
+    function drawIcon(size) {
+      const canvas = document.getElementById('icon' + size);
+      const ctx = canvas.getContext('2d');
+      
+      // Background
+      ctx.fillStyle = '#2196f3';
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, size * 0.15);
+      ctx.fill();
+      
+      // Target circles
+      const center = size / 2;
+      const maxRadius = size * 0.35;
+      
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = size * 0.06;
+      
+      // Outer circle
+      ctx.beginPath();
+      ctx.arc(center, center, maxRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Inner circle
+      ctx.beginPath();
+      ctx.arc(center, center, maxRadius * 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Center dot
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(center, center, size * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Crosshair lines
+      ctx.beginPath();
+      ctx.moveTo(center, size * 0.1);
+      ctx.lineTo(center, size * 0.25);
+      ctx.moveTo(center, size * 0.75);
+      ctx.lineTo(center, size * 0.9);
+      ctx.moveTo(size * 0.1, center);
+      ctx.lineTo(size * 0.25, center);
+      ctx.moveTo(size * 0.75, center);
+      ctx.lineTo(size * 0.9, center);
+      ctx.stroke();
+    }
+    
+    function downloadIcon(size) {
+      const canvas = document.getElementById('icon' + size);
+      const link = document.createElement('a');
+      link.download = 'icon' + size + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+    
+    // Draw all icons on load
+    [16, 48, 128].forEach(drawIcon);
+  </script>
+</body>
+</html>
